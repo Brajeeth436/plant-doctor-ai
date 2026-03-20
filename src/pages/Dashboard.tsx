@@ -37,6 +37,12 @@ const Dashboard = () => {
     }
   };
 
+  const handleCameraCapture = (imageDataUrl: string) => {
+    setSelectedImage(imageDataUrl);
+    setScanMode(false);
+    setResult(null);
+  };
+
   const analyzeImage = async () => {
     if (!selectedImage) return;
     setAnalyzing(true);
