@@ -15,6 +15,7 @@ const Dashboard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [scanMode, setScanMode] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<{
     disease: string;
