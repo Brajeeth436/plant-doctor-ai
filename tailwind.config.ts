@@ -96,6 +96,12 @@ export default {
           "0%, 100%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.05)" },
         },
+        "scan-line": {
+          "0%": { top: "1rem", opacity: "0" },
+          "10%": { opacity: "1" },
+          "90%": { opacity: "1" },
+          "100%": { top: "calc(100% - 1rem)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -103,6 +109,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-up": "slide-up 0.6s ease-out",
         "pulse-leaf": "pulse_leaf 2s ease-in-out infinite",
+        "scan-line": "scan-line 2s ease-in-out infinite",
       },
     },
   },

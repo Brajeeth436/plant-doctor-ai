@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Leaf, Upload, Camera, Loader2, Bug, Droplets, Sprout, MessageCircle, LogOut } from 'lucide-react';
+import { Leaf, Upload, Camera, Loader2, Bug, Droplets, Sprout, MessageCircle, LogOut, ScanLine } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import CameraScanner from '@/components/CameraScanner';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [scanMode, setScanMode] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<{
     disease: string;
@@ -33,6 +35,12 @@ const Dashboard = () => {
       reader.readAsDataURL(file);
       setResult(null);
     }
+  };
+
+  const handleCameraCapture = (imageDataUrl: string) => {
+    setSelectedImage(imageDataUrl);
+    setScanMode(false);
+    setResult(null);
   };
 
   const analyzeImage = async () => {
@@ -89,14 +97,39 @@ const Dashboard = () => {
           <Card className="card-natural animate-slide-up">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display">
-                <Camera className="w-5 h-5 text-primary" /> Upload Plant Image
+                <Camera className="w-5 h-5 text-primary" /> Scan Plant
               </CardTitle>
-              <CardDescription>Take a clear photo of the affected leaf or plant part</CardDescription>
+              <CardDescription>Upload an image or use your camera to scan live</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
 
-              {selectedImage ? (
+              {/* Mode toggle */}
+              <div className="flex gap-2">
+                <Button
+                  variant={!scanMode ? 'default' : 'outline'}
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => setScanMode(false)}
+                >
+                  <Upload className="w-4 h-4 mr-1" /> Upload
+                </Button>
+                <Button
+                  variant={scanMode ? 'default' : 'outline'}
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => { setScanMode(true); setSelectedImage(null); setSelectedFile(null); setResult(null); }}
+                >
+                  <ScanLine className="w-4 h-4 mr-1" /> Live Scan
+                </Button>
+              </div>
+
+              {scanMode ? (
+                <CameraScanner
+                  onCapture={handleCameraCapture}
+                  onClose={() => setScanMode(false)}
+                />
+              ) : selectedImage ? (
                 <div className="relative rounded-xl overflow-hidden border border-border">
                   <img src={selectedImage} alt="Selected plant" className="w-full h-64 object-cover" />
                   <button onClick={() => { setSelectedImage(null); setSelectedFile(null); setResult(null); }}
