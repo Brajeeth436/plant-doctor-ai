@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Leaf, Upload, Camera, Loader2, Bug, Droplets, Sprout, MessageCircle, LogOut } from 'lucide-react';
+import { Leaf, Upload, Camera, Loader2, Bug, Droplets, Sprout, MessageCircle, LogOut, ScanLine } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import CameraScanner from '@/components/CameraScanner';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
